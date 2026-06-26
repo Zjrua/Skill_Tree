@@ -1,0 +1,15 @@
+% skills.tex — 推荐算法岗技能（重组现有技能，推荐岗侧重的排序）
+% ------------------------------------------------------------
+% 加载基础技能碎片，按推荐岗的关注点重新组织：
+% 数学/统计基础 → 编程 → 框架 → 统计方法 → 工具 → 语言
+\input{skills_base}
+
+\section{\faCogs\ 技能}
+\begin{itemize}[parsep=0.5ex]
+  \skillMath              % 概率统计/线代/数值计算（推荐模型的理论底子）
+  \skillLang              % Python 优先
+  \skillFramework         % PyTorch 是推荐模型主力框架
+  \skillStatMethod        % 特征工程/回归（CTR预估的基础）
+  \skillTools
+  \skillHumanLang
+\end{itemize}

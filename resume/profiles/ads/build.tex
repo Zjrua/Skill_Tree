@@ -1,0 +1,29 @@
+% !TEX program = xelatex
+% ============================================================
+%  build.tex — 广告算法岗 Profile 主文件
+%  目标岗位: 广告算法 / CTR预估 / 计算广告 实习
+% ============================================================
+\documentclass{resume}
+\usepackage{zh_CN-Adobefonts_external}
+\input{layout_compact}                   % 紧凑排版（内容较多时压缩到一页）
+
+\begin{document}
+\pagenumbering{gobble}
+
+\input{personal}
+\input{summary}
+\input{education}
+
+% --- 项目经历（算法项目优先）---
+\section{\faFlask\ 项目经历}
+\input{experience/harbin_route}        % RouteTransformer（核心算法项目）
+\input{experience/media_equipment}     % 器材管理系统（工程落地能力）
+\input{experience/physical_data}       % 体质数据建模（数据分析能力）
+
+\section{\faTrophy\ 竞赛获奖}
+\input{experience/stats_modeling}      % 统计建模大赛（参赛身份）
+\input{experience/awards}              % 美赛 + 国赛
+
+\input{skills}
+
+\end{document}

@@ -1,0 +1,37 @@
+% !TEX program = xelatex
+% ============================================================
+%  build.tex — 推荐算法岗 Profile 主文件
+%  目标岗位: 推荐算法 / 排序 / CTR预估 实习
+% ------------------------------------------------------------
+%  编译方式（由 build/build_profile.cmd 自动完成）：
+%    cd resume/templates/billryan
+%    set TEXINPUTS=..\..\shared\;..\..\profiles\recommendation\;
+%    xelatex ..\..\profiles\recommendation\build.tex
+%  本文件内的 \input{} 仅写文件名，路径由 TEXINPUTS 注入。
+% ============================================================
+\documentclass{resume}
+\usepackage{zh_CN-Adobefonts_external}  % 中文支持（外部 Adobe 字体）
+\input{layout_compact}                   % 紧凑排版（内容较多时压缩到一页）
+
+\begin{document}
+\pagenumbering{gobble}  % 不显示页码
+
+% --- 共享素材（改 shared/ 即所有 profile 同步）---
+\input{personal}        % 姓名 + 联系方式
+\input{summary}         % 本 profile 的自我评价
+\input{education}       % 教育背景
+
+% --- 项目经历（按推荐岗的关注点：算法项目优先）---
+\section{\faFlask\ 项目经历}
+\input{experience/harbin_route}        % RouteTransformer（核心算法项目）
+\input{experience/media_equipment}     % 器材管理系统（工程落地能力）
+\input{experience/physical_data}       % 体质数据建模（数据分析能力）
+
+\section{\faTrophy\ 竞赛获奖}
+\input{experience/stats_modeling}      % 统计建模大赛（参赛身份）
+\input{experience/awards}              % 美赛 + 国赛
+
+% --- 技能（本 profile 重组）---
+\input{skills}
+
+\end{document}

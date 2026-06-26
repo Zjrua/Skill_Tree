@@ -1,0 +1,24 @@
+% skills_base.tex — 技能素材碎片（供各 profile 按需 \input 重组）
+% =========================================================
+% 原则：只用 CLAUDE.md 里确认的真实技能，不添加未掌握的关键词。
+% 每个 \skillXXX 命令是一个可复用片段，profile 在自己的 skills.tex 里
+% 挑选并重新排序，无需改动本文件。
+% =========================================================
+
+% --- 编程语言 ---
+\newcommand{\skillLang}{\item 编程语言：Python > C/C++ > SQL}
+
+% --- 框架与库 ---
+\newcommand{\skillFramework}{\item 框架与库：PyTorch, pandas, NumPy, scikit-learn}
+
+% --- 数据与统计方法（突出统计背景，搜广推/数据分析通用）---
+\newcommand{\skillStatMethod}{\item 统计方法：回归分析、多元统计、假设检验、特征工程}
+
+% --- 工具链 ---
+\newcommand{\skillTools}{\item 工具：Git, Linux, Jupyter, VS Code, \LaTeX}
+
+% --- 语言能力（附四六级成绩作为量化证明）---
+\newcommand{\skillHumanLang}{\item 语言：中文（母语），英语（CET-4 581，CET-6 508，可读写学术文献）}
+
+% --- 数学基础（算法岗加分，突出信息与计算科学背景）---
+\newcommand{\skillMath}{\item 数学基础：概率论与数理统计、线性代数、数值计算、最优化}

@@ -1,0 +1,77 @@
+{
+  "_comment": "⚠️ 本文件是前端「个人信息」板块的数据源。与 resume/shared/*.tex 是同一信息的两份表达——改了一处请同步另一处。",
+  "name": "张钧瑞",
+  "name_en": "Junrui Zhang",
+  "tagline": "哈工大应用统计在读硕士 · 冲刺搜广推算法实习",
+  "contact": {
+    "email": "25S112072@stu.hit.edu.cn",
+    "phone": "(+86) 188-0461-8723",
+    "github": "Zjrua",
+    "github_url": "https://github.com/Zjrua"
+  },
+  "education": [
+    {
+      "school": "哈尔滨工业大学 (HIT)",
+      "period": "2025 — 2028",
+      "degree": "硕士研究生",
+      "major": "应用统计 (Applied Statistics)",
+      "location": "哈尔滨"
+    },
+    {
+      "school": "哈尔滨工业大学 (HIT)",
+      "period": "2020 — 2024",
+      "degree": "理学学士",
+      "major": "信息与计算科学 (Information & Computing Science)",
+      "location": "哈尔滨"
+    }
+  ],
+  "skills": [
+    {"group": "编程语言", "items": ["Python", "C/C++", "SQL"]},
+    {"group": "框架与库", "items": ["PyTorch", "pandas", "NumPy", "scikit-learn"]},
+    {"group": "数学基础", "items": ["概率论与数理统计", "线性代数", "数值计算", "最优化"]},
+    {"group": "统计方法", "items": ["回归分析", "多元统计", "假设检验", "特征工程"]},
+    {"group": "工具", "items": ["Git", "Linux", "Jupyter", "VS Code", "LaTeX"]},
+    {"group": "语言", "items": ["中文(母语)", "英语 CET-4 581 / CET-6 508"]}
+  ],
+  "experience": [
+    {
+      "title": "基于 Transformer 的冰雪文旅路线生成",
+      "period": "2026",
+      "role": "全国大学生统计建模大赛 · 队长 / 核心贡献者",
+      "tech": ["PyTorch", "Transformer", "序列建模", "数据爬取"],
+      "url": "https://github.com/Zjrua/Harbin-route-planner",
+      "desc": "将冰雪文旅路线规划建模为带活动类型约束的序列生成任务，基于 Transformer 实现路线生成模型，覆盖约 10,000 个 POI 与 5,168 条训练路线。",
+      "highlights": [
+        "引入记忆机制(检索历史优质路线)、双曲嵌入(刻画 POI 层级)、矩阵正交化优化器",
+        "设计活动转移约束与约束 Beam Search；显存复用将训练峰值显存从约 25GB 降至约 3GB",
+        "爬取高德/天地图 POI 与小红书路线构建数据集；消融实验 + 论文撰写"
+      ]
+    },
+    {
+      "title": "体质健康数据统计建模研究",
+      "period": "2025.09 — 至今",
+      "role": "导师：田波平教授课题组",
+      "tech": ["Python", "pandas", "统计建模"],
+      "desc": "对大规模体质健康数据进行统计建模与影响因素分析，独立完成数据清洗、特征构造与回归建模全流程，论文已投稿《体育科学》(CSCD 核心)。"
+    },
+    {
+      "title": "全媒体中心器材管理系统",
+      "period": "2024 — 2025",
+      "role": "独立开发 · 约 4300 行代码",
+      "tech": ["React", "Node.js/Express", "SQLite", "Docker"],
+      "url": "https://github.com/Zjrua/media_equipment_system",
+      "desc": "独立设计并开发覆盖器材全生命周期的 Web 管理系统(React 18 + Express + SQLite，含借还审批、维修保养、统计审计)；用事务+乐观锁解决并发竞态，实现 Token 鉴权、RBAC 权限与 Docker 一键部署。"
+    }
+  ],
+  "awards": [
+    {"title": "美国大学生数学建模竞赛 (MCM/ICM) 一等奖 (Meritorious Winner)", "year": "2022"},
+    {"title": "全国大学生数学建模竞赛 黑龙江省二等奖", "year": "2023"},
+    {"title": "全国大学生统计建模大赛（研究生组），队长", "year": "2026", "note": "TJJM20260414180979"},
+    {"title": "哈尔滨工业大学校优秀学生「启智润心奖」", "year": "2022"}
+  ],
+  "leadership": [
+    "哈工大全媒体中心学生团队负责人（2022—2024）",
+    "应用统计专业研究生班长（2025—2026 学年）",
+    "高中参加全国青少年信息学奥林匹克联赛 (NOIP)"
+  ]
+}

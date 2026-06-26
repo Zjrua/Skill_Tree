@@ -1,0 +1,9 @@
+% layout_compact.tex — 紧凑排版配置（内容较多时压缩到一页）
+% =========================================================
+% 各 profile 在 build.tex 的 \begin{document} 前 \input{layout_compact}
+% 统一管理排版参数，避免每个 profile 重复配置。
+% =========================================================
+\geometry{top=0.5in, bottom=0.4in}                % 收紧上下页边距（默认 1in）
+\titlespacing*{\section}{0cm}{*1.0}{*1.0}         % section 前后间距（默认 *1.8）
+\setlist[itemize]{topsep=0.15em, parsep=0.2ex, leftmargin=0pt, label=\textbullet}  % 列表完全左对齐正文边界
+\renewcommand{\baselinestretch}{0.97}             % 全局行距微收（默认 1.0）

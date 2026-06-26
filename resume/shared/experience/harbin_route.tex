@@ -1,0 +1,15 @@
+% harbin_route.tex — 基于 Transformer 的哈尔滨冰雪文旅路线规划（统计建模大赛核心项目）
+% 标签: #深度学习 #Transformer #序列建模 #规划 #PyTorch #爬虫
+% 适配 profile: 推荐（核心！）/ 搜索 / 广告 — 算法岗最看重的项目
+% 来源: git@github.com:Zjrua/Harbin-route-planner.git
+% 角色: 队长 / 核心贡献者（独立完成模型设计与训练）
+% 背景: 2026 全国大学生统计建模大赛，参赛编号 TJJM20260414180979
+% ---------------------------------------------------------------------
+\datedsubsection{\textbf{基于 Transformer 的冰雪文旅路线生成}}{2026}
+\role{PyTorch, Transformer, 序列建模, 数据爬取}{全国大学生统计建模大赛 · 队长 \textbar\ \href{https://github.com/Zjrua/Harbin-route-planner}{GitHub}}
+将冰雪文旅路线规划建模为带活动类型约束的序列生成任务，基于 Transformer 实现路线生成模型，覆盖约 10{,}000 个 POI 与 5{,}168 条训练路线。
+\begin{itemize}[parsep=0.3ex]
+  \item 在 Transformer 基础上引入三个改进模块：基于相似度检索的记忆机制（检索历史优质路线作参考）、双曲嵌入（刻画 POI 层级关系）、矩阵正交化优化器
+  \item 设计活动转移约束与约束 Beam Search 保证路线合理性；通过数据加载与显存复用优化，将训练峰值显存从约 25 GB 降至约 3 GB
+  \item 爬取高德/天地图 POI 与小红书路线构建数据集；通过消融实验对比各模块效果，并完成论文撰写
+\end{itemize}
