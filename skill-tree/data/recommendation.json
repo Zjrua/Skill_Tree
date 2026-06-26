@@ -1,0 +1,311 @@
+{
+  "tree_id": "recommendation",
+  "order": 1,
+  "title": "推荐算法",
+  "subtitle": "召回 → 精排 → 序列 → 大模型推荐",
+  "icon": "🎯",
+  "color": "#4ade80",
+  "fruit": "../../resume/profiles/recommendation/",
+  "branches": [
+    {
+      "id": "foundation",
+      "name": "基础层",
+      "icon": "🧱",
+      "description": "所有方向的共同地基。学完这里，三个方向的枝叶才能挂得住。",
+      "nodes": [
+        {
+          "id": "python",
+          "name": "Python",
+          "category": "编程语言",
+          "status": "done",
+          "depends_on": [],
+          "tasks": [
+            {"id": "basic", "title": "语法/数据结构/函数/类", "done": true},
+            {"id": "data", "title": "pandas / NumPy 数据处理", "done": true},
+            {"id": "idiom", "title": "列表推导 / 生成器 / 装饰器", "done": true}
+          ],
+          "verify": [
+            {"id": "v1", "title": "能默写一个带 __init__ 的类并解释继承", "done": true}
+          ]
+        },
+        {
+          "id": "pytorch",
+          "name": "PyTorch",
+          "category": "深度学习框架",
+          "status": "learning",
+          "depends_on": ["python"],
+          "tasks": [
+            {"id": "tensor", "title": "Tensor 操作 / autograd", "done": true},
+            {"id": "nn", "title": "nn.Module 搭模型 / 训练循环", "done": true},
+            {"id": "dataloader", "title": "Dataset / DataLoader", "done": false},
+            {"id": "gpu", "title": "GPU 训练 / 分布式(DDP) 基础", "done": false}
+          ],
+          "verify": [
+            {"id": "v1", "title": "能默写一个完整训练循环(forward/loss/backward/step)", "checks": ["nn", "dataloader"]},
+            {"id": "v2", "title": "能讲清 DataLoader 的 batch/shuffle/num_workers 作用", "checks": ["dataloader"]}
+          ]
+        },
+        {
+          "id": "stats",
+          "name": "概率统计与数学",
+          "category": "数学基础",
+          "status": "done",
+          "depends_on": [],
+          "tasks": [
+            {"id": "prob", "title": "概率论与数理统计", "done": true},
+            {"id": "linalg", "title": "线性代数", "done": true},
+            {"id": "opt", "title": "最优化 / 梯度下降", "done": true}
+          ]
+        },
+        {
+          "id": "ml_basics",
+          "name": "机器学习基础",
+          "category": "经典 ML",
+          "status": "learning",
+          "depends_on": ["stats", "python"],
+          "tasks": [
+            {"id": "lr", "title": "逻辑回归 / 损失函数 / 评估指标", "done": true},
+            {"id": "fe", "title": "特征工程", "done": true},
+            {"id": "sklearn", "title": "scikit-learn 实操", "done": false},
+            {"id": "auc", "title": "AUC / Logloss 等 CTR 指标", "done": false}
+          ],
+          "verify": [
+            {"id": "v1", "title": "能从零推导逻辑回归的损失函数与梯度", "checks": ["lr"]},
+            {"id": "v2", "title": "能解释 AUC 的概率含义并手算一个小例子", "checks": ["auc"]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "recall",
+      "name": "召回",
+      "icon": "🪝",
+      "description": "从海量物料里粗筛候选。对应 projects/DeepMatch。",
+      "nodes": [
+        {
+          "id": "recall_concept",
+          "name": "召回与排序的两阶段",
+          "category": "系统架构",
+          "status": "learning",
+          "depends_on": ["ml_basics"],
+          "tasks": [
+            {"id": "twostage", "title": "理解召回→精排→重排漏斗", "done": true},
+            {"id": "embedding", "title": "理解 Embedding / 向量检索思想", "done": false}
+          ]
+        },
+        {
+          "id": "dssm",
+          "name": "DSSM",
+          "category": "双塔召回",
+          "status": "locked",
+          "depends_on": ["recall_concept", "pytorch"],
+          "tasks": [
+            {"id": "paper", "title": "读 DSSM 论文 (2013)", "done": false, "resource": "https://www.microsoft.com/en-us/research/publication/learning-deep-structured-semantic-models-for-web-search-using-clickthrough-data/"},
+            {"id": "source", "title": "读 DeepMatch 的 DSSM 实现", "done": false, "resource": "../../projects/DeepMatch/deepmatch/models/dssm.py"},
+            {"id": "explain", "title": "能讲清双塔结构 + 负样本采样", "done": false}
+          ]
+        },
+        {
+          "id": "youtubednn",
+          "name": "YouTube DNN",
+          "category": "序列召回",
+          "status": "locked",
+          "depends_on": ["recall_concept", "pytorch"],
+          "tasks": [
+            {"id": "paper", "title": "读 YouTube DNN 论文 (2016)", "done": false, "resource": "https://dl.acm.org/doi/10.1145/2959100.2959190"},
+            {"id": "source", "title": "读 DeepMatch 的 YouTubeDNN 实现", "done": false, "resource": "../../projects/DeepMatch/deepmatch/models/youtubednn.py"},
+            {"id": "explain", "title": "能讲清 user embedding 作为分类目标", "done": false}
+          ]
+        },
+        {
+          "id": "mind",
+          "name": "MIND",
+          "category": "多兴趣召回",
+          "status": "locked",
+          "depends_on": ["youtubednn"],
+          "tasks": [
+            {"id": "paper", "title": "读 MIND 论文 (2019)", "done": false, "resource": "https://arxiv.org/abs/1904.08030"},
+            {"id": "source", "title": "读 DeepMatch 的 MIND 实现", "done": false, "resource": "../../projects/DeepMatch/deepmatch/models/mind.py"},
+            {"id": "explain", "title": "能讲清 Capsule 生成多兴趣向量", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ranking",
+      "name": "精排 / CTR",
+      "icon": "⚖️",
+      "description": "对候选打分排序。对应 projects/DeepCTR-Torch、FuxiCTR。",
+      "nodes": [
+        {
+          "id": "fm",
+          "name": "FM / FFM",
+          "category": "特征交叉",
+          "status": "locked",
+          "depends_on": ["ml_basics"],
+          "tasks": [
+            {"id": "paper", "title": "读 FM 论文 (2010)", "done": false, "resource": "https://www.csie.ntu.edu.tw/~b97053/paper/Rendle2010Factorization.pdf"},
+            {"id": "explain", "title": "能讲清 FM 的二阶隐向量交叉", "done": false}
+          ]
+        },
+        {
+          "id": "dnn",
+          "name": "DNN 精排基线",
+          "category": "深度模型",
+          "status": "locked",
+          "depends_on": ["pytorch", "fm"],
+          "tasks": [
+            {"id": "wide_deep", "title": "理解 Wide & Deep", "done": false, "resource": "https://arxiv.org/abs/1606.07792"},
+            {"id": "explain", "title": "能讲清记忆侧 vs 泛化侧", "done": false}
+          ]
+        },
+        {
+          "id": "deepfm",
+          "name": "DeepFM",
+          "category": "特征交叉",
+          "status": "learning",
+          "depends_on": ["fm", "dnn"],
+          "tasks": [
+            {"id": "paper", "title": "读 DeepFM 论文 (2018)", "done": true, "resource": "https://arxiv.org/abs/1703.04247"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 deepfm.py", "done": true, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/deepfm.py"},
+            {"id": "demo", "title": "跑通 Criteo demo", "done": false},
+            {"id": "explain", "title": "能讲清 FM + DNN 并联共享 embedding", "done": false}
+          ],
+          "verify": [
+            {"id": "v1", "title": "能在白板上画出 DeepFM 结构并标出数据流", "checks": ["source", "explain"]},
+            {"id": "v2", "title": "能说清 FM 部分和 DNN 部分为什么共享 embedding", "checks": ["explain"]}
+          ]
+        },
+        {
+          "id": "dcn",
+          "name": "DCN / DCN-Mix",
+          "category": "特征交叉",
+          "status": "locked",
+          "depends_on": ["deepfm"],
+          "tasks": [
+            {"id": "paper", "title": "读 DCN 论文 (2017)", "done": false, "resource": "https://arxiv.org/abs/1708.05123"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 dcn.py", "done": false, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/dcn.py"},
+            {"id": "explain", "title": "能讲清 Cross Network 的交叉阶数", "done": false}
+          ]
+        },
+        {
+          "id": "xdeepfm",
+          "name": "xDeepFM",
+          "category": "特征交叉",
+          "status": "locked",
+          "depends_on": ["deepfm"],
+          "tasks": [
+            {"id": "paper", "title": "读 xDeepFM 论文 (2018)", "done": false, "resource": "https://arxiv.org/abs/1803.05170"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 xdeepfm.py", "done": false, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/xdeepfm.py"}
+          ]
+        },
+        {
+          "id": "benchmark",
+          "name": "FuxiCTR 基准对比",
+          "category": "实验",
+          "status": "locked",
+          "depends_on": ["deepfm", "dcn"],
+          "tasks": [
+            {"id": "run", "title": "在 FuxiCTR 跑通 2+ 模型 on Criteo", "done": false, "resource": "../../projects/FuxiCTR/"},
+            {"id": "compare", "title": "对比 AUC / Logloss 并写小结", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sequence",
+      "name": "序列推荐",
+      "icon": "🧬",
+      "description": "建模用户行为序列。对应 projects/RecSystem-Pytorch。",
+      "nodes": [
+        {
+          "id": "din",
+          "name": "DIN",
+          "category": "目标注意力",
+          "status": "locked",
+          "depends_on": ["deepfm"],
+          "tasks": [
+            {"id": "paper", "title": "读 DIN 论文 (2018)", "done": false, "resource": "https://arxiv.org/abs/1706.06978"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 din.py", "done": false, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/din.py"},
+            {"id": "explain", "title": "能讲清 target attention 机制", "done": false}
+          ]
+        },
+        {
+          "id": "dien",
+          "name": "DIEN",
+          "category": "序列兴趣演化",
+          "status": "locked",
+          "depends_on": ["din"],
+          "tasks": [
+            {"id": "paper", "title": "读 DIEN 论文 (2019)", "done": false, "resource": "https://arxiv.org/abs/1809.03672"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 dien.py", "done": false, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/dien.py"}
+          ]
+        },
+        {
+          "id": "sim",
+          "name": "SIM (长序列)",
+          "category": "长兴趣",
+          "status": "locked",
+          "depends_on": ["dien"],
+          "tasks": [
+            {"id": "paper", "title": "读 SIM 论文 (2020)", "done": false, "resource": "https://arxiv.org/abs/2006.05639"},
+            {"id": "source", "title": "读 RecSystem-Pytorch 的序列模型", "done": false, "resource": "../../projects/RecSystem-Pytorch/sequence/models.py"},
+            {"id": "explain", "title": "能讲清两阶段召回(GSU+ESU)", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "llm_rec",
+      "name": "大模型推荐",
+      "icon": "🤖",
+      "description": "最前沿方向。对应 projects/OpenOneRec、generative-recommenders、HLLM。",
+      "nodes": [
+        {
+          "id": "transformer",
+          "name": "Transformer 基础",
+          "category": "前置知识",
+          "status": "learning",
+          "depends_on": ["pytorch"],
+          "tasks": [
+            {"id": "paper", "title": "读 Attention is All You Need", "done": true, "resource": "https://arxiv.org/abs/1706.03762"},
+            {"id": "routetransformer", "title": "RouteTransformer 路线生成项目实践", "done": true},
+            {"id": "explain", "title": "能讲清 self-attention / positional encoding", "done": false}
+          ]
+        },
+        {
+          "id": "gen_rec",
+          "name": "生成式推荐 (HSTU)",
+          "category": "生成式",
+          "status": "locked",
+          "depends_on": ["transformer", "sequence"],
+          "tasks": [
+            {"id": "paper", "title": "读 Actions Speak Louder than Words (HSTU)", "done": false, "resource": "https://arxiv.org/abs/2402.17152"},
+            {"id": "source", "title": "读 generative-recommenders 的 hstu.py", "done": false, "resource": "../../projects/generative-recommenders/generative_recommenders/research/modeling/sequential/hstu.py"}
+          ]
+        },
+        {
+          "id": "hllm",
+          "name": "HLLM 层次化 LLM",
+          "category": "LLM 增强",
+          "status": "locked",
+          "depends_on": ["gen_rec"],
+          "tasks": [
+            {"id": "paper", "title": "读 HLLM 论文 (字节)", "done": false, "resource": "https://arxiv.org/abs/2410.05265"},
+            {"id": "source", "title": "浏览 projects/HLLM 结构", "done": false, "resource": "../../projects/HLLM/"}
+          ]
+        },
+        {
+          "id": "openonerec",
+          "name": "OpenOneRec (Qwen backbone)",
+          "category": "LLM 增强",
+          "status": "locked",
+          "depends_on": ["gen_rec"],
+          "tasks": [
+            {"id": "browse", "title": "了解快手 OpenOneRec 的 LLM+推荐范式", "done": false, "resource": "../../projects/OpenOneRec/"}
+          ]
+        }
+      ]
+    }
+  ]
+}

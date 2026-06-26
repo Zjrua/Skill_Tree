@@ -1,0 +1,95 @@
+{
+  "tree_id": "search",
+  "order": 2,
+  "title": "搜索算法",
+  "subtitle": "召回 / 倒排 → 排序(LTR) → 向量检索",
+  "icon": "🔍",
+  "color": "#34d399",
+  "fruit": "../../resume/profiles/search/",
+  "branches": [
+    {
+      "id": "foundation",
+      "name": "基础层",
+      "icon": "🧱",
+      "description": "与推荐方向共享的地基(引用同名 node)。本树学习时可视作前置已完成。",
+      "shared": true,
+      "nodes": [
+        {"id": "python", "name": "Python", "category": "编程语言", "status": "done", "depends_on": [], "tasks": [{"id":"basic","title":"语法/数据结构/函数/类","done":true},{"id":"data","title":"pandas / NumPy","done":true}]},
+        {"id": "pytorch", "name": "PyTorch", "category": "深度学习框架", "status": "learning", "depends_on": ["python"], "tasks": [{"id":"tensor","title":"Tensor / autograd","done":true},{"id":"nn","title":"nn.Module / 训练循环","done":true},{"id":"dataloader","title":"Dataset / DataLoader","done":false}]},
+        {"id": "ml_basics", "name": "机器学习基础", "category": "经典 ML", "status": "learning", "depends_on": ["python"], "tasks": [{"id":"lr","title":"逻辑回归 / 评估指标","done":true},{"id":"fe","title":"特征工程","done":true},{"id":"auc","title":"NDCG / MAP 等排序指标","done":false}]}
+      ]
+    },
+    {
+      "id": "retrieval",
+      "name": "召回与倒排",
+      "icon": "🗂️",
+      "description": "传统检索基石：倒排索引、相关性。",
+      "nodes": [
+        {
+          "id": "inverted_index",
+          "name": "倒排索引 / TF-IDF",
+          "category": "传统检索",
+          "status": "learning",
+          "depends_on": ["ml_basics"],
+          "tasks": [
+            {"id": "concept", "title": "理解倒排索引 / BM25", "done": true},
+            {"id": "bm25", "title": "能手推 TF-IDF / BM25 公式", "done": false}
+          ]
+        },
+        {
+          "id": "dssm_search",
+          "name": "DSSM (语义召回)",
+          "category": "语义召回",
+          "status": "locked",
+          "depends_on": ["inverted_index", "pytorch"],
+          "tasks": [
+            {"id": "paper", "title": "读 DSSM 论文 (搜索场景)", "done": false, "resource": "https://www.microsoft.com/en-us/research/publication/learning-deep-structured-semantic-models-for-web-search-using-clickthrough-data/"},
+            {"id": "source", "title": "读 DeepMatch 的 DSSM 实现", "done": false, "resource": "../../projects/DeepMatch/deepmatch/models/dssm.py"},
+            {"id": "explain", "title": "能讲清 query-doc 双塔 + 负采样", "done": false}
+          ]
+        },
+        {
+          "id": "vector_retrieval",
+          "name": "向量检索 (ANN)",
+          "category": "向量召回",
+          "status": "locked",
+          "depends_on": ["dssm_search"],
+          "tasks": [
+            {"id": "concept", "title": "理解 HNSW / IVF 等 ANN", "done": false},
+            {"id": "tool", "title": "用 Faiss / Milvus 跑通近邻检索 demo", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ltr",
+      "name": "排序 (LTR)",
+      "icon": "📊",
+      "description": "Learning to Ranking：pointwise / pairwise / listwise。可复用推荐精排节点。",
+      "nodes": [
+        {
+          "id": "ltr_basics",
+          "name": "LTR 三大范式",
+          "category": "排序理论",
+          "status": "locked",
+          "depends_on": ["ml_basics"],
+          "tasks": [
+            {"id": "concept", "title": "理解 pointwise/pairwise/listwise 区别", "done": false},
+            {"id": "loss", "title": "理解 RankNet / LambdaRank 损失", "done": false}
+          ]
+        },
+        {
+          "id": "deepfm_search",
+          "name": "DeepFM (精排模型复用)",
+          "category": "深度精排",
+          "status": "locked",
+          "depends_on": ["ltr_basics", "pytorch"],
+          "tasks": [
+            {"id": "source", "title": "读 DeepCTR-Torch 的 deepfm.py", "done": false, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/deepfm.py"},
+            {"id": "adapt", "title": "理解 CTR 精排如何迁移到搜索相关性排序", "done": false}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "tree_id": "ads",
+  "order": 3,
+  "title": "广告算法",
+  "subtitle": "CTR 预估 → 转化/多任务 → 创意/机制",
+  "icon": "📢",
+  "color": "#fbbf24",
+  "fruit": "../../resume/profiles/ads/",
+  "branches": [
+    {
+      "id": "foundation",
+      "name": "基础层",
+      "icon": "🧱",
+      "description": "与推荐方向共享的地基(引用同名 node)。本树学习时可视作前置已完成。",
+      "shared": true,
+      "nodes": [
+        {"id": "python", "name": "Python", "category": "编程语言", "status": "done", "depends_on": [], "tasks": [{"id":"basic","title":"语法/数据结构","done":true},{"id":"data","title":"pandas / NumPy","done":true}]},
+        {"id": "pytorch", "name": "PyTorch", "category": "深度学习框架", "status": "learning", "depends_on": ["python"], "tasks": [{"id":"tensor","title":"Tensor / autograd","done":true},{"id":"nn","title":"nn.Module / 训练循环","done":true}]},
+        {"id": "ml_basics", "name": "机器学习基础", "category": "经典 ML", "status": "learning", "depends_on": ["python"], "tasks": [{"id":"lr","title":"逻辑回归 / 损失函数","done":true},{"id":"auc","title":"AUC / Logloss","done":false}]}
+      ]
+    },
+    {
+      "id": "ctr",
+      "name": "CTR 预估",
+      "icon": "🎯",
+      "description": "广告的点击率预估。复用推荐精排模型。",
+      "nodes": [
+        {
+          "id": "fm",
+          "name": "FM",
+          "category": "特征交叉",
+          "status": "locked",
+          "depends_on": ["ml_basics"],
+          "tasks": [
+            {"id": "paper", "title": "读 FM 论文 (2010)", "done": false, "resource": "https://www.csie.ntu.edu.tw/~b97053/paper/Rendle2010Factorization.pdf"},
+            {"id": "explain", "title": "能讲清二阶隐向量交叉", "done": false}
+          ]
+        },
+        {
+          "id": "deepfm",
+          "name": "DeepFM",
+          "category": "深度 CTR",
+          "status": "learning",
+          "depends_on": ["fm", "pytorch"],
+          "tasks": [
+            {"id": "paper", "title": "读 DeepFM 论文 (2018)", "done": true, "resource": "https://arxiv.org/abs/1703.04247"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 deepfm.py", "done": true, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/deepfm.py"},
+            {"id": "demo", "title": "跑通 Criteo demo", "done": false},
+            {"id": "explain", "title": "能讲清 FM + DNN 并联", "done": false}
+          ]
+        },
+        {
+          "id": "fuxictr_bench",
+          "name": "FuxiCTR 基准",
+          "category": "实验",
+          "status": "locked",
+          "depends_on": ["deepfm"],
+          "tasks": [
+            {"id": "run", "title": "在 FuxiCTR 跑通 2+ 模型 on Criteo", "done": false, "resource": "../../projects/FuxiCTR/"},
+            {"id": "compare", "title": "对比 AUC 并写小结", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "multitask",
+      "name": "多任务 / 转化",
+      "icon": "🔀",
+      "description": "同时预估 CTR+CVR 等多目标。对应 DeepCTR-Torch/multitask。",
+      "nodes": [
+        {
+          "id": "esmm",
+          "name": "ESMM",
+          "category": "多任务",
+          "status": "locked",
+          "depends_on": ["deepfm"],
+          "tasks": [
+            {"id": "paper", "title": "读 ESMM 论文 (2018)", "done": false, "resource": "https://arxiv.org/abs/1804.07931"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 esmm.py", "done": false, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/multitask/esmm.py"},
+            {"id": "explain", "title": "能讲清 CTR+CVR 联合建模 / 样本选择偏差", "done": false}
+          ]
+        },
+        {
+          "id": "mmoe",
+          "name": "MMoE",
+          "category": "多任务",
+          "status": "locked",
+          "depends_on": ["esmm"],
+          "tasks": [
+            {"id": "paper", "title": "读 MMoE 论文 (2018)", "done": false, "resource": "https://dl.acm.org/doi/10.1145/3219819.3220007"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 mmoe.py", "done": false, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/multitask/mmoe.py"},
+            {"id": "explain", "title": "能讲清 Expert 门控共享", "done": false}
+          ]
+        },
+        {
+          "id": "ple",
+          "name": "PLE",
+          "category": "多任务",
+          "status": "locked",
+          "depends_on": ["mmoe"],
+          "tasks": [
+            {"id": "paper", "title": "读 PLE 论文 (2020)", "done": false, "resource": "https://dl.acm.org/doi/10.1145/3383313.3412236"},
+            {"id": "source", "title": "读 DeepCTR-Torch 的 ple.py", "done": false, "resource": "../../projects/DeepCTR-Torch/deepctr_torch/models/multitask/ple.py"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "creative",
+      "name": "创意 / 机制",
+      "icon": "🎨",
+      "description": "广告独有：创意生成、eCPM 排序、计费机制。",
+      "nodes": [
+        {
+          "id": "ecpm",
+          "name": "eCPM 与竞价机制",
+          "category": "广告机制",
+          "status": "locked",
+          "depends_on": ["deepfm"],
+          "tasks": [
+            {"id": "concept", "title": "理解 eCPM = bid × pCTR 与 GSP 计费", "done": false},
+            {"id": "ocpx", "title": "理解 oCPC / oCPM 出价", "done": false}
+          ]
+        }
+      ]
+    }
+  ]
+}
