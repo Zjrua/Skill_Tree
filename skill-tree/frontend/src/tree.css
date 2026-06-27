@@ -7,8 +7,8 @@
 .dir-chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
 .dir-hint { font-size: 12px; color: var(--fg-faint); }
 
-.dag-wrap { position: relative; overflow: auto; border-radius: 0 0 24px 24px; }
-.dag-canvas { position: relative; margin: 0 auto; }
+.dag-wrap { position: relative; overflow: auto; border-radius: 0 0 24px 24px; display: flex; justify-content: center; }
+.dag-canvas { position: relative; margin: 0 auto; flex-shrink: 0; }
 
 /* 连线 */
 .edges { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; z-index: 1; }
