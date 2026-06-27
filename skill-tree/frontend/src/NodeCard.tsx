@@ -22,7 +22,8 @@ export const NodeCard = forwardRef<HTMLDivElement, Props>(function NodeCard(
   const treeId = node.dirs[0]?.id ?? ''
 
   const handleToggle = (taskId: string, done: boolean, isVerify: boolean) => {
-    onToggle(treeId, node.id, taskId, !done, isVerify).then(onChanged)
+    // done 已是目标状态(来自 checkbox 的 e.target.checked)，直接传，不要再取反
+    onToggle(treeId, node.id, taskId, done, isVerify).then(onChanged)
   }
 
   return (
