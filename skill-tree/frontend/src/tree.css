@@ -3,7 +3,8 @@
 .forest-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--growth), var(--bud)); opacity: .8; z-index: 3; }
 .forest-head { padding: 22px 30px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .dir-legend { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.dir-chip { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--fg-dim); background: var(--moss-2); border: 1px solid var(--line); padding: 6px 13px; border-radius: 20px; }
+.dir-chip { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--fg-dim); background: var(--moss-2); border: 1px solid var(--line); padding: 6px 13px; border-radius: 20px; cursor: pointer; transition: border-color .2s, box-shadow .2s, color .2s; }
+.dir-chip:hover { border-color: var(--c); box-shadow: 0 0 14px -4px var(--c); color: var(--fg); }
 .dir-chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
 .dir-hint { font-size: 12px; color: var(--fg-faint); }
 
