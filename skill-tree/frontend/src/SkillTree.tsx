@@ -17,6 +17,7 @@ interface Props {
 export function SkillTree({ graph, onToggle, onChanged }: Props) {
   const [openNode, setOpenNode] = useState<string | null>(null)
   const [hoverNode, setHoverNode] = useState<string | null>(null)
+  const [hoverDir, setHoverDir] = useState<string | null>(null)
   const [push, setPush] = useState(0)
   const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map())
   const svgRef = useRef<SVGSVGElement>(null)
@@ -49,9 +50,8 @@ export function SkillTree({ graph, onToggle, onChanged }: Props) {
   }, [nodes, openBaseY, push])
   const height = canvas.h + push
 
-  // ── 悬停路径 ──
+  // ── 悬停路径：节点→上游祖先+下游后代；方向 chip→该方向全部节点及其上下游 ──
   const pathSet = useMemo(() => {
-    if (!hoverNode) return null
     const parents = new Map<string, string[]>()
     const children = new Map<string, string[]>()
     edges.forEach(e => {
@@ -69,10 +69,18 @@ export function SkillTree({ graph, onToggle, onChanged }: Props) {
       }
       return seen
     }
+    if (hoverDir) {
+      // 该方向的全部节点 + 它们的直接前置(1跳，含共享基础)，呈现这条方向的学习路径
+      const dirNodes = new Set(nodes.filter(n => n.dirs.some(d => d.id === hoverDir)).map(n => n.id))
+      const withParents = new Set(dirNodes)
+      dirNodes.forEach(id => (parents.get(id) ?? []).forEach(p => withParents.add(p)))
+      return withParents
+    }
+    if (!hoverNode) return null
     return new Set([hoverNode, ...reach(hoverNode, parents), ...reach(hoverNode, children)])
-  }, [hoverNode, edges])
+  }, [hoverNode, hoverDir, edges, nodes])
 
-  const dim = hoverNode !== null
+  const dim = hoverNode !== null || hoverDir !== null
   const onEdge = (e: Edge) => pathSet?.has(e.from) && pathSet?.has(e.to)
 
   // ── 连线：每帧从节点实时 DOM 位置重算，跟随过渡 ──
@@ -105,18 +113,24 @@ export function SkillTree({ graph, onToggle, onChanged }: Props) {
     const loop = (now: number) => { drawEdges(); if (now - start < 400) raf = requestAnimationFrame(loop) }
     raf = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(raf)
-  }, [placed, hoverNode, nodes, dim, openHeight])
+  }, [placed, hoverNode, hoverDir, nodes, dim, openHeight])
 
   return (
     <section className="forest-card" style={{ marginTop: 22 }}>
       <div className="forest-head">
         <div className="dir-legend">
           {graph.dir_order.map(d => (
-            <span key={d.id} className="dir-chip" style={{ ['--c' as any]: d.color }}>
+            <span
+              key={d.id}
+              className="dir-chip"
+              style={{ ['--c' as any]: d.color }}
+              onMouseEnter={() => setHoverDir(d.id)}
+              onMouseLeave={() => setHoverDir(null)}
+            >
               <i />{d.icon} {d.title}
             </span>
           ))}
-          <span className="dir-hint">· 悬停节点看学习路径</span>
+          <span className="dir-hint">· 悬停节点或方向标签看学习路径</span>
         </div>
       </div>
       <div className={`dag-wrap ${dim ? 'dim' : ''}`}>
