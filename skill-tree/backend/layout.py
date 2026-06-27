@@ -125,18 +125,25 @@ def compute_layout(trees: list[dict]) -> dict:
     for d in rows:
         rows[d].sort(key=sort_key)
 
+    # 先算每行宽度和画布宽(取最宽行)
+    row_widths: dict[int, int] = {}
+    for d, ids in rows.items():
+        n = len(ids)
+        row_widths[d] = n * NODE_W + (n - 1) * COL_GAP if n > 0 else 0
+    max_row_w = max(row_widths.values()) if row_widths else 0
+    canvas_w = max_row_w + CANVAS_PAD * 2
     canvas_h = (max_depth + 1) * ROW_GAP + CANVAS_PAD * 2
-    max_row_w = 0
+
+    # 每行在画布内居中：行起始 x = (画布宽 - 行宽)/2
     pos: dict[str, dict] = {}
     for d, ids in rows.items():
         n = len(ids)
-        row_w = n * NODE_W + (n - 1) * COL_GAP if n > 0 else 0
-        max_row_w = max(max_row_w, row_w)
+        row_w = row_widths[d]
+        start_x = (canvas_w - row_w) / 2          # 行居中
         y = CANVAS_PAD + d * ROW_GAP
         for i, nid in enumerate(ids):
-            x = CANVAS_PAD + i * (NODE_W + COL_GAP)
+            x = start_x + i * (NODE_W + COL_GAP)
             pos[nid] = {"x": x, "y": y, "depth": d}
-    canvas_w = max_row_w + CANVAS_PAD * 2
 
     edges = []
     for nid, ds in deps.items():
