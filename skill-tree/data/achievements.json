@@ -111,6 +111,38 @@
       "desc": "完成推荐方向「大模型推荐」整支分支",
       "condition": {"type": "branch_done", "tree_id": "recommendation", "branch_id": "llm_rec"},
       "tier": "gold"
+    },
+    {
+      "id": "agent_seed",
+      "icon": "🌱",
+      "name": "Agent 播种",
+      "desc": "在 AI Agent 方向点亮第一个节点",
+      "condition": {"type": "branch_done", "tree_id": "agent", "branch_id": "llm_foundation"},
+      "tier": "silver"
+    },
+    {
+      "id": "rag_builder",
+      "icon": "📚",
+      "name": "知识工程师",
+      "desc": "完成 AI Agent 方向「RAG 检索增强」整支分支",
+      "condition": {"type": "branch_done", "tree_id": "agent", "branch_id": "rag"},
+      "tier": "gold"
+    },
+    {
+      "id": "agent_master",
+      "icon": "🧙",
+      "name": "Agent 架构师",
+      "desc": "完成 AI Agent 方向「Agent 框架」+「工具调用」两支分支",
+      "condition": {"type": "branch_done", "tree_id": "agent", "branch_id": "agent_framework"},
+      "tier": "gold"
+    },
+    {
+      "id": "quadruple",
+      "icon": "🎴",
+      "name": "四方全能",
+      "desc": "推荐 / 搜索 / 广告 / Agent 四方向各达 25%",
+      "condition": {"type": "all_trees_progress", "min": 25},
+      "tier": "gold"
     }
   ]
 }

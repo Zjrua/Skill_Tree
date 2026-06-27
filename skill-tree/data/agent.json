@@ -1,0 +1,272 @@
+{
+  "tree_id": "agent",
+  "order": 4,
+  "title": "AI Agent",
+  "subtitle": "LLM 基础 → RAG → Agent 框架 → Tool Use → 多智能体 → 工程化",
+  "icon": "🤖",
+  "color": "#a78bfa",
+  "fruit": "../../resume/profiles/agent/",
+  "branches": [
+    {
+      "id": "foundation",
+      "name": "基础层",
+      "icon": "🧱",
+      "description": "与搜广推共享的地基。学习时可视作前置。",
+      "shared": true,
+      "nodes": [
+        {"id": "python", "name": "Python", "category": "编程语言", "status": "done", "depends_on": [], "tasks": [{"id":"basic","title":"语法/数据结构/函数/类","done":true},{"id":"async","title":"asyncio / 异步编程","done":false}]},
+        {"id": "pytorch", "name": "PyTorch", "category": "深度学习框架", "status": "learning", "depends_on": ["python"], "tasks": [{"id":"tensor","title":"Tensor / autograd","done":true},{"id":"nn","title":"nn.Module / 训练循环","done":true}]},
+        {"id": "ml_basics", "name": "机器学习基础", "category": "经典 ML", "status": "learning", "depends_on": ["python"], "tasks": [{"id":"lr","title":"逻辑回归 / 评估指标","done":true},{"id":"auc","title":"评估指标","done":false}]}
+      ]
+    },
+    {
+      "id": "llm_foundation",
+      "name": "LLM 基础",
+      "icon": "🧠",
+      "description": "大语言模型的核心原理。对应手册「技术栈 - 理论基础」。",
+      "nodes": [
+        {
+          "id": "transformer",
+          "name": "Transformer",
+          "category": "模型架构",
+          "status": "learning",
+          "depends_on": ["pytorch"],
+          "tasks": [
+            {"id": "paper", "title": "读 Attention is All You Need", "done": true, "resource": "https://arxiv.org/abs/1706.03762"},
+            {"id": "route", "title": "RouteTransformer 路线生成项目实践", "done": true}
+          ]
+        },
+        {
+          "id": "llm_concepts",
+          "name": "LLM 核心概念",
+          "category": "理论",
+          "status": "locked",
+          "depends_on": ["transformer"],
+          "tasks": [
+            {"id": "tokenizer", "title": "Tokenizer (BPE / SentencePiece) 与词表", "done": false},
+            {"id": "position", "title": "位置编码 (绝对/RoPE/ALiBi)", "done": false},
+            {"id": "kv_cache", "title": "KV Cache 与推理加速", "done": false},
+            {"id": "decode", "title": "解码策略 (greedy/beam/sampling/top-k/top-p)", "done": false}
+          ]
+        },
+        {
+          "id": "mainstream_llm",
+          "name": "主流大模型",
+          "category": "生态",
+          "status": "locked",
+          "depends_on": ["llm_concepts"],
+          "tasks": [
+            {"id": "gpt", "title": "GPT 系列 / Decoder-only 架构", "done": false},
+            {"id": "llama", "title": "Llama / Qwen / DeepSeek 开源模型", "done": false},
+            {"id": "moa", "title": "MoE (混合专家) 架构", "done": false}
+          ]
+        },
+        {
+          "id": "prompt",
+          "name": "Prompt Engineering",
+          "category": "应用",
+          "status": "locked",
+          "depends_on": ["llm_concepts"],
+          "tasks": [
+            {"id": "basic", "title": "Zero-shot / Few-shot / CoT 提示", "done": false},
+            {"id": "advanced", "title": "Self-Consistency / ToT / ReAct 提示范式", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rag",
+      "name": "RAG 检索增强",
+      "icon": "📚",
+      "description": "让 LLM 接入外部知识。对应手册「技术栈 - RAG」。",
+      "nodes": [
+        {
+          "id": "embedding",
+          "name": "文本向量化",
+          "category": "Embedding",
+          "status": "locked",
+          "depends_on": ["llm_concepts"],
+          "tasks": [
+            {"id": "concept", "title": "理解文本 Embedding 与语义相似度", "done": false},
+            {"id": "model", "title": "BGE / m3e / OpenAI embedding 模型", "done": false}
+          ]
+        },
+        {
+          "id": "vector_db",
+          "name": "向量数据库",
+          "category": "存储",
+          "status": "locked",
+          "depends_on": ["embedding"],
+          "tasks": [
+            {"id": "ann", "title": "ANN 算法 (HNSW / IVF)", "done": false},
+            {"id": "tool", "title": "Faiss / Milvus / Chroma 实操", "done": false}
+          ]
+        },
+        {
+          "id": "rag_pipeline",
+          "name": "RAG 全流程",
+          "category": "系统",
+          "status": "locked",
+          "depends_on": ["vector_db"],
+          "tasks": [
+            {"id": "chunk", "title": "文档切分 (chunking) 策略", "done": false},
+            {"id": "retrieve", "title": "检索 → 重排 (rerank) → 生成", "done": false},
+            {"id": "advanced", "title": "HyDE / 多路召回 / Self-RAG", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agent_framework",
+      "name": "Agent 框架",
+      "icon": "🧩",
+      "description": "构建能规划+行动的智能体。对应手册「技术栈 - Agent 开发」。",
+      "nodes": [
+        {
+          "id": "react_agent",
+          "name": "ReAct 范式",
+          "category": "理论",
+          "status": "locked",
+          "depends_on": ["prompt"],
+          "tasks": [
+            {"id": "paper", "title": "读 ReAct 论文 (Reason+Act)", "done": false, "resource": "https://arxiv.org/abs/2210.03629"},
+            {"id": "explain", "title": "能讲清 Thought-Action-Observation 循环", "done": false}
+          ]
+        },
+        {
+          "id": "framework",
+          "name": "主流 Agent 框架",
+          "category": "工程",
+          "status": "locked",
+          "depends_on": ["react_agent"],
+          "tasks": [
+            {"id": "langchain", "title": "LangChain / LangGraph", "done": false},
+            {"id": "llamaindex", "title": "LlamaIndex", "done": false},
+            {"id": "autogen", "title": "AutoGen / CrewAI / MetaGPT", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tool_use",
+      "name": "工具调用 / Function Call",
+      "icon": "🔧",
+      "description": "让 Agent 调用外部工具。对应手册「技术栈 - Function Call / MCP」。",
+      "nodes": [
+        {
+          "id": "function_call",
+          "name": "Function Calling",
+          "category": "接口",
+          "status": "locked",
+          "depends_on": ["framework"],
+          "tasks": [
+            {"id": "concept", "title": "OpenAI Function Calling 机制", "done": false},
+            {"id": "impl", "title": "定义工具 schema + 解析模型输出", "done": false}
+          ]
+        },
+        {
+          "id": "mcp",
+          "name": "MCP 协议",
+          "category": "生态",
+          "status": "locked",
+          "depends_on": ["function_call"],
+          "tasks": [
+            {"id": "concept", "title": "理解 Model Context Protocol", "done": false},
+            {"id": "impl", "title": "实现一个 MCP Server / Client", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "multi_agent",
+      "name": "多智能体 / 规划",
+      "icon": "🕸️",
+      "description": "多 Agent 协作与任务规划。对应手册「技术栈 - 多智能体」。",
+      "nodes": [
+        {
+          "id": "planning",
+          "name": "任务规划",
+          "category": "理论",
+          "status": "locked",
+          "depends_on": ["framework"],
+          "tasks": [
+            {"id": "decomp", "title": "任务分解 (Plan-and-Execute)", "done": false},
+            {"id": "reflect", "title": "反思与自我修正 (Reflexion)", "done": false}
+          ]
+        },
+        {
+          "id": "multiagent",
+          "name": "多智能体协作",
+          "category": "系统",
+          "status": "locked",
+          "depends_on": ["planning", "tool_use"],
+          "tasks": [
+            {"id": "role", "title": "角色分工与消息传递", "done": false},
+            {"id": "debate", "title": "多 Agent 辩论 / 投票共识", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "finetune",
+      "name": "微调与对齐",
+      "icon": "🎯",
+      "description": "定制化 LLM。对应手册「技术栈 - 微调」。",
+      "nodes": [
+        {
+          "id": "peft",
+          "name": "参数高效微调",
+          "category": "训练",
+          "status": "locked",
+          "depends_on": ["mainstream_llm"],
+          "tasks": [
+            {"id": "lora", "title": "LoRA / QLoRA 原理", "done": false},
+            {"id": "impl", "title": "用 PEFT 库微调一个开源模型", "done": false}
+          ]
+        },
+        {
+          "id": "alignment",
+          "name": "对齐训练",
+          "category": "训练",
+          "status": "locked",
+          "depends_on": ["peft"],
+          "tasks": [
+            {"id": "sft", "title": "SFT 监督微调", "done": false},
+            {"id": "rlhf", "title": "RLHF / DPO 对齐", "done": false}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "engineering",
+      "name": "工程化部署",
+      "icon": "⚙️",
+      "description": "把 Agent 做成产品。对应手册「技术栈 - 工程」。",
+      "nodes": [
+        {
+          "id": "inference",
+          "name": "推理优化",
+          "category": "部署",
+          "status": "locked",
+          "depends_on": ["llm_concepts"],
+          "tasks": [
+            {"id": "quant", "title": "量化 (INT8/INT4/GPTQ/AWQ)", "done": false},
+            {"id": "engine", "title": "vLLM / TensorRT-LLM 推理框架", "done": false}
+          ]
+        },
+        {
+          "id": "product",
+          "name": "Agent 工程化",
+          "category": "产品",
+          "status": "locked",
+          "depends_on": ["inference", "multi_agent"],
+          "tasks": [
+            {"id": "eval", "title": "Agent 评估 (成功率/轨迹/成本)", "done": false},
+            {"id": "observe", "title": "可观测性 / LangSmith / 日志追踪", "done": false},
+            {"id": "guard", "title": "安全护栏 / Prompt 注入防护", "done": false}
+          ]
+        }
+      ]
+    }
+  ]
+}
