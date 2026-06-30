@@ -1,4 +1,4 @@
-import type { Graph, Profile, Template, Fruit } from './types'
+import type { Graph, Profile, Template, Fruit, AgentEvent } from './types'
 
 const BASE = ''   // 同源(开发走 vite proxy /api → :8000)
 
@@ -68,4 +68,41 @@ export const api = {
     postJson<{ ok: boolean; data: any }>('/api/ai/generate-node', { description, node_id: nodeId, existing_ids: existingIds }),
   applyTree: (trees: any[], profile: any) => postJson('/api/ai/apply-tree', { trees, profile }),
   applyDirection: (tree: any) => postJson('/api/ai/apply-direction', { tree }),
+
+  // ── Agent 对话(SSE 流式) ──
+  agentChatStream(
+    message: string,
+    onEvent: (ev: AgentEvent) => void,
+  ): Promise<void> {
+    return fetch(BASE + '/api/agent/chat', {
+      method: 'POST',
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ message }),
+    }).then(async (r) => {
+      if (!r.ok) throw new Error(await r.text().catch(() => ''))
+      const reader = r.body?.getReader()
+      if (!reader) return
+      const decoder = new TextDecoder()
+      let buf = ''
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buf += decoder.decode(value, { stream: true })
+        const parts = buf.split('\n\n')
+        buf = parts.pop() || ''
+        for (const part of parts) {
+          const line = part.trim()
+          if (line.startsWith('data: ')) {
+            try { onEvent(JSON.parse(line.slice(6)) as AgentEvent) } catch { /* ignore malformed */ }
+          }
+        }
+      }
+    })
+  },
+
+  publishDoc: (content: string, title: string) =>
+    postJson<{ ok: boolean; url: string }>('/api/agent/publish-doc', { content, title }),
+
+  buildIndex: () => postJson<{ ok: boolean; stats: unknown }>('/api/rag/build-index', {}),
+  ragStatus: () => getJson<{ count: number; built_at: string; model: string }>('/api/rag/status'),
 }

@@ -91,3 +91,20 @@ export interface Fruit {
   id: string; title: string; icon: string; subtitle: string
   color: string; pct: number; has_pdf: boolean
 }
+
+// ── Agent 对话 ──
+export type AgentEvent =
+  | { type: 'thinking'; content: string }
+  | { type: 'tool_call'; action: string; arguments: Record<string, unknown> }
+  | { type: 'tool_result'; action: string; content: string }
+  | { type: 'final_answer'; content: string }
+  | { type: 'doc_card'; doc_type: string; content: string }
+  | { type: 'node_proposal'; node: unknown }
+  | { type: 'error'; content: string }
+  | { type: 'done' }
+
+export interface ChatMessage {
+  role: 'user' | 'assistant'
+  content: string
+  events?: AgentEvent[]   // 助手消息可附带的工具/思考/卡片事件
+}
