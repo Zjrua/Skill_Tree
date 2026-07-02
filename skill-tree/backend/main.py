@@ -449,7 +449,8 @@ def _build_ctx(uid: str) -> tuple[agent_tool.Context, dict]:
         return False
 
     ctx = agent_tool.Context(uid=uid, graph=graph, resume=resume,
-                             retriever=retriever, rag_index_dir=rag_index_dir(uid), trees=trees)
+                             retriever=retriever, rag_index_dir=rag_index_dir(uid),
+                             trees=trees, cfg=cfg)
     ctx.on_toggle = on_toggle  # type: ignore[attr-defined]
     return ctx, cfg
 

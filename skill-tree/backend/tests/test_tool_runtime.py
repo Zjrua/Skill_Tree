@@ -32,9 +32,15 @@ def test_unknown_tool_raises():
 
 
 def test_add_node_returns_proposal_not_written():
-    """add_node 不直接写盘，返回"建议"标记。"""
-    out = execute_tool("add_node", {"description": "LightGCN"}, _ctx())
-    assert "建议" in out["text"] or "proposal" in out["text"].lower()
+    """add_node 返回 ToolResult,text 含'确认/建议'标记,不写盘。"""
+    import ai
+    orig = ai.generate_node
+    ai.generate_node = lambda cfg, d, nid, e: {"id": "x", "name": "X", "tasks": []}
+    try:
+        out = execute_tool("add_node", {"description": "LightGCN"}, _ctx())
+    finally:
+        ai.generate_node = orig
+    assert "确认" in out["text"] or "建议" in out["text"]
 
 
 def test_get_direction_returns_nodes_and_next():
@@ -67,3 +73,57 @@ def test_execute_tool_returns_tool_result_dict():
     assert isinstance(out, dict)
     assert "text" in out and "45" in out["text"]
     assert out.get("events") == []
+
+
+def test_add_node_emits_proposal_event():
+    """add_node 返回 ToolResult,events 含 node_proposal,node 通过校验。"""
+    import ai
+    orig = ai.generate_node
+    ai.generate_node = lambda cfg, description, node_id, existing_ids: {
+        "id": "lightgcn", "name": "LightGCN", "category": "推荐",
+        "status": "locked", "depends_on": [], "tasks": [{"id": "t1", "title": "读论文", "done": False}]}
+    try:
+        ctx = _ctx()
+        ctx.cfg = {"base_url": "x", "api_key": "y"}
+        out = execute_tool("add_node", {"description": "LightGCN"}, ctx)
+    finally:
+        ai.generate_node = orig
+    assert out["text"]
+    assert any(e.get("type") == "node_proposal" for e in out["events"])
+    prop = [e for e in out["events"] if e.get("type") == "node_proposal"][0]
+    assert prop["mode"] == "new_node"
+    assert prop["node"]["id"] == "lightgcn"
+    assert prop["node"]["name"] == "LightGCN"
+
+
+def test_add_node_invalid_then_autofixed_by_slugify():
+    """第一次生成的 node 缺 id(校验失败),用 slugify(name) 补 id。"""
+    import ai
+    orig = ai.generate_node
+    ai.generate_node = lambda cfg, d, nid, e: {"name": "LightGCN", "tasks": []}  # 缺 id
+    try:
+        ctx = _ctx()
+        ctx.cfg = {"base_url": "x", "api_key": "y"}
+        out = execute_tool("add_node", {"description": "LightGCN"}, ctx)
+    finally:
+        ai.generate_node = orig
+    prop = [e for e in out["events"] if e.get("type") == "node_proposal"][0]
+    assert prop["node"]["id"] == "lightgcn"   # slugified from name
+
+
+def test_add_tasks_emits_proposal_event():
+    """add_tasks 产 add_tasks 模式的 node_proposal。"""
+    import ai
+    orig = ai.generate_node
+    ai.generate_node = lambda cfg, d, nid, e: {"id": nid or "n", "name": "N",
+                                               "tasks": [{"id": "t2", "title": "新任务", "done": False}]}
+    try:
+        ctx = _ctx()
+        ctx.cfg = {"base_url": "x", "api_key": "y"}
+        out = execute_tool("add_tasks", {"node_id": "n1", "description": "补手算验收"}, ctx)
+    finally:
+        ai.generate_node = orig
+    assert any(e.get("type") == "node_proposal" for e in out["events"])
+    prop = [e for e in out["events"] if e.get("type") == "node_proposal"][0]
+    assert prop["mode"] == "add_tasks"
+    assert prop["node_id"] == "n1"
