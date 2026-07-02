@@ -30,6 +30,7 @@ class Context:
     retriever: Any                   # rag.retriever.Retriever 实例（或 None）
     rag_index_dir: Any               # Path（论文缓存用）
     trees: list = None               # 原始树数据（含 branches，供 get_direction 用）# type: ignore
+    cfg: dict | None = None          # 新:LLM 配置(add_node/add_tasks 生成节点用)
 
 
 def execute_tool(name: str, args: dict, ctx: Context) -> ToolResult:
@@ -120,14 +121,47 @@ def _search_knowledge(args, ctx):
 
 # ── 写操作（生成建议，不写盘）──
 def _add_node(args, ctx):
+    """生成结构化 node 建议,过 schema 校验(失败 slugify 补 id/重写),emit node_proposal。"""
+    import ai
+    cfg = ctx.cfg or {}
     desc = args.get("description", "")
-    return _ok(f"[建议·待确认] 新增节点：{desc}。"
-               f"将生成完整 node（含学习任务/验收）供你审核。返回 proposal。")
+    existing = [n.get("id") for n in (ctx.graph.get("nodes") or [])]
+    node = ai._norm_node(ai.generate_node(cfg, desc, "", existing))
+    # id 不规范(非小写 a-z0-9_ / 大写或其它字符,如 _norm_node 由 name 合成的 "LightGCN")→ slugify(name) 补规范 id
+    if node.get("name") and node.get("id") != ai.slugify_id(str(node.get("id"))):
+        node["id"] = ai.slugify_id(str(node["name"]))
+    ok, errs = ai.validate_node(node)
+    if not ok:
+        # 修补:缺 id 且有 name → slugify
+        if "缺少 id" in errs and node.get("name"):
+            node["id"] = ai.slugify_id(str(node["name"]))
+            ok, errs = ai.validate_node(node)
+        # 仍不 ok → 重写一次
+        if not ok:
+            try:
+                node2 = ai._norm_node(ai.generate_node(cfg, desc, "", existing))
+                if ai.validate_node(node2)[0]:
+                    node = node2
+            except Exception:
+                pass
+    event = {"type": "node_proposal", "mode": "new_node", "node": node}
+    if not ai.validate_node(node)[0]:
+        event["incomplete"] = True
+    text = f"已生成新节点《{node.get('name', desc)}》建议（含 {len(node.get('tasks', []))} 个任务），请在卡片上确认。"
+    return _ok(text, [event])
 
 
 def _add_tasks(args, ctx):
-    return _ok(f"[建议·待确认] 为节点 {args.get('node_id','')} 补充任务：{args.get('description','')}。"
-               f"返回 proposal。")
+    """为指定 node 生成补充 tasks/verify,emit node_proposal(add_tasks 模式)。"""
+    import ai
+    cfg = ctx.cfg or {}
+    nid = args.get("node_id", "")
+    desc = args.get("description", "")
+    node = ai._norm_node(ai.generate_node(cfg, desc, nid, []))
+    tasks = node.get("tasks", [])
+    event = {"type": "node_proposal", "mode": "add_tasks", "node_id": nid, "tasks": tasks}
+    text = f"已为节点 {nid} 生成 {len(tasks)} 条补充任务,请在卡片上确认。"
+    return _ok(text, [event])
 
 
 def _toggle_task(args, ctx):
