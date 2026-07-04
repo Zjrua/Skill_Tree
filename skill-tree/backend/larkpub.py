@@ -1,10 +1,22 @@
 """larkpub.py — 封装 lark-cli subprocess,发布飞书文档(wiki 归档优先)并返回 (url, kind)。"""
 from __future__ import annotations
+import os, sys
 import re
 import subprocess
 
 URL_RE = re.compile(r"https?://\S+/(?:docx|wiki)/\S+")
 DOCX_TOKEN_RE = re.compile(r"/docx/([A-Za-z0-9]+)")
+
+
+def resolve_lark_cli() -> str:
+    """优先用 SKILLTREE_BIN_DIR 下的 lark-cli(Tauri 解压位置);否则退 PATH 里的 lark-cli。"""
+    bin_dir = os.environ.get("SKILLTREE_BIN_DIR")
+    if bin_dir:
+        exe = "lark-cli.exe" if sys.platform == "win32" else "lark-cli"
+        local = os.path.join(bin_dir, exe)
+        if os.path.exists(local):
+            return local
+    return "lark-cli"   # 退 PATH(开发期 / 用户自装)
 
 
 def _run(cmd: list[str]) -> tuple[int, str, str]:
@@ -29,7 +41,8 @@ def publish_doc(xml_content: str, title: str = "学习笔记",
     """发布文档。wiki_space_id 有 → docs+create 拿 token,再 wiki+move 归档到知识库;
     无 → 仅 docs+create。返回 (url, kind:"wiki"|"docx")。失败返回 ("", "")。"""
     # 1) 先 docs +create 拿 docx(无论是否归档 wiki,都需要这份文档)
-    create_cmd = ["lark-cli", "docs", "+create", "--as", "user", "--content", xml_content]
+    lark = resolve_lark_cli()
+    create_cmd = [lark, "docs", "+create", "--as", "user", "--content", xml_content]
     try:
         code, out, err = _run(create_cmd)
     except Exception:
@@ -43,7 +56,7 @@ def publish_doc(xml_content: str, title: str = "学习笔记",
     token = parse_docx_token(out)
     if not token:
         return docx_url, "docx"    # 拿不到 token,优雅降级为 docx
-    move_cmd = ["lark-cli", "wiki", "+move", "--as", "user",
+    move_cmd = [lark, "wiki", "+move", "--as", "user",
                 "--obj-type", "docx", "--obj-token", token,
                 "--target-space-id", wiki_space_id]
     try:
