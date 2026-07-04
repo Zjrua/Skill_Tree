@@ -1,5 +1,6 @@
 # tests/test_larkpub.py
 from __future__ import annotations
+import sys
 
 from larkpub import publish_doc, parse_doc_url
 
@@ -85,3 +86,18 @@ def test_publish_doc_wiki_move_fail_degrades_to_docx(monkeypatch):
     url, kind = larkpub.publish_doc("<title>x</title>", "x", wiki_space_id="sp1")
     assert kind == "docx"
     assert "/docx/" in url
+
+
+def test_resolve_lark_cli_prefers_local_bin(tmp_path, monkeypatch):
+    """优先用 SKILLTREE_BIN_DIR 下的 lark-cli;找不到才退 PATH。"""
+    import larkpub
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    # 模拟本地已解压的 lark-cli(空文件即可,只测路径解析)
+    if sys.platform == "win32":
+        (bindir / "lark-cli.exe").write_text("")
+    else:
+        (bindir / "lark-cli").write_text("")
+    monkeypatch.setenv("SKILLTREE_BIN_DIR", str(bindir))
+    path = larkpub.resolve_lark_cli()
+    assert str(bindir) in path
