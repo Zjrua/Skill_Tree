@@ -1,6 +1,12 @@
 import type { Template } from '../types'
 
-export function TemplatesPanel({ templates }: { templates: Template[] }) {
+export function TemplatesPanel({ templates, error, onRetry }: { templates: Template[]; error?: boolean; onRetry?: () => void }) {
+  if (error && templates.length === 0) return (
+    <div className="panel active"><div className="empty-state">
+      <p>⚠ 模板加载失败。</p>
+      <button className="btn primary" onClick={onRetry}>重试</button>
+    </div></div>
+  )
   return (
     <section className="panel active">
       <div className="panel-head">

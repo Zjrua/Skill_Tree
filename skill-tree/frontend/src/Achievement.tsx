@@ -8,8 +8,8 @@ export function Achievement({ achievements }: { achievements: Ach[] }) {
         <span className="hint">每完成一组目标，便绽放一朵</span>
       </div>
       <div className="bloom-grid">
-        {achievements.map((a, i) => (
-          <div key={i} className={`bloom ${a.unlocked ? 'unlocked' : ''}`} title={a.def.desc}>
+        {achievements.map((a) => (
+          <div key={a.def.id} className={`bloom ${a.unlocked ? 'unlocked' : ''}`} title={a.def.desc}>
             <span className="petal">{a.def.icon}</span>
             <span className="meta">
               <span className="n">{a.def.name}</span>

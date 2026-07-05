@@ -35,15 +35,24 @@ export function ChatToolbar(props: Props) {
   const switchProvider = async (pid: string) => {
     const p = providers.find(x => x.id === pid)
     if (!p) return
+    const prevCfg = cfg
     const newCfg: LlmConfig = { ...cfg, provider: pid, base_url: p.base_url, model: p.model }
     setCfg(newCfg)
-    try { await api.saveLlmConfig(newCfg) } catch { /* ignore */ }
+    try { await api.saveLlmConfig(newCfg) }
+    catch { setCfg(prevCfg) }   // 保存失败回滚,刷新后不会"假切换"
   }
+
+  const [searching, setSearching] = useState(false)
+  const [searched, setSearched] = useState(false)
 
   const doSearch = async () => {
     if (!searchQ.trim()) return
-    const r = await api.chatSearch(searchQ)
-    setHits(r.hits)
+    setSearching(true); setSearched(false)
+    try {
+      const r = await api.chatSearch(searchQ)
+      setHits(r.hits)
+    } catch { setHits([]) }
+    finally { setSearching(false); setSearched(true) }
   }
 
   const doExport = async () => {
@@ -59,8 +68,8 @@ export function ChatToolbar(props: Props) {
   if (props.collapsed) {
     return (
       <div className="chat-toolbar collapsed">
-        <button className="tbtn ico" onClick={props.onToggleCollapse} title="展开">▢</button>
-        {props.onClose && <button className="tbtn ico" onClick={props.onClose} title="收起">✕</button>}
+        <button className="tbtn ico" onClick={props.onToggleCollapse} title="展开" aria-label="展开">▢</button>
+        {props.onClose && <button className="tbtn ico" onClick={props.onClose} title="收起" aria-label="收起">✕</button>}
       </div>
     )
   }
@@ -71,8 +80,8 @@ export function ChatToolbar(props: Props) {
       <div className="ct-row ct-head">
         <div className="ct-title"><span className="ai-orb">✦</span> AI 助手</div>
         <div className="ct-actions">
-          <button className="tbtn ico" onClick={props.onToggleCollapse} title="折叠工具条">▢</button>
-          {props.onClose && <button className="tbtn ico" onClick={props.onClose} title="收起">✕</button>}
+          <button className="tbtn ico" onClick={props.onToggleCollapse} title="折叠工具条" aria-label="折叠工具条">▢</button>
+          {props.onClose && <button className="tbtn ico" onClick={props.onClose} title="收起" aria-label="收起">✕</button>}
         </div>
       </div>
 
@@ -97,9 +106,9 @@ export function ChatToolbar(props: Props) {
         <button className="tbtn sm" onClick={() => setShowSessions(v => !v)}>
           ▾ {current?.title?.slice(0, 8) || '新会话'}
         </button>
-        <button className="tbtn ico" onClick={props.onNewSession} title="新对话">＋</button>
-        <button className="tbtn ico" onClick={() => setShowSearch(v => !v)} title="搜索">🔍</button>
-        <button className="tbtn ico" onClick={doExport} title="导出 JSON">⤓</button>
+        <button className="tbtn ico" onClick={props.onNewSession} title="新对话" aria-label="新对话">＋</button>
+        <button className="tbtn ico" onClick={() => setShowSearch(v => !v)} title="搜索" aria-label="搜索会话">🔍</button>
+        <button className="tbtn ico" onClick={doExport} title="导出 JSON" aria-label="导出对话">⤓</button>
       </div>
 
       {showSessions && (
@@ -119,6 +128,8 @@ export function ChatToolbar(props: Props) {
           <input value={searchQ} onChange={e => setSearchQ(e.target.value)}
                  onKeyDown={e => e.key === 'Enter' && doSearch()} placeholder="搜索所有会话…" />
           <div className="search-hits">
+            {searching && <div className="dd-empty">搜索中…</div>}
+            {!searching && searched && hits.length === 0 && <div className="dd-empty">无匹配结果</div>}
             {hits.map((h, i) => (
               <div key={i} className="hit" onClick={() => { props.onJumpToMessage(h.session_id, h.message_index); setShowSearch(false) }}>
                 <div className="hit-title">{h.session_title}</div>
