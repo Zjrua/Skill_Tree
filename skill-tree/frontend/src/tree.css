@@ -54,9 +54,10 @@
   transition: max-height .32s cubic-bezier(.2,.8,.2,1), opacity .28s ease, margin-top .32s, padding-top .32s, border-color .32s;
 }
 .node.open .detail {
-  max-height: 600px; opacity: 1;
+  max-height: 70vh; opacity: 1;
   margin-top: 12px; padding-top: 12px; border-top-color: var(--line);
   display: flex; flex-direction: column; gap: 2px;
+  overflow-y: auto;   /* 任务多时内部滚动,不再硬裁切 */
 }
 .kp { padding: 2px 0; }
 .task-row { display: flex; align-items: flex-start; gap: 9px; padding: 4px 0; font-size: 12.5px; line-height: 1.45; }

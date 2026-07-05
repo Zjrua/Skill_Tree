@@ -25,8 +25,11 @@ export default function App() {
   const [graph, setGraph] = useState<Graph | null>(null)
   const [graphErr, setGraphErr] = useState(false)
   const [profile, setProfile] = useState<Profile | null>(null)
+  const [profileErr, setProfileErr] = useState(false)
   const [templates, setTemplates] = useState<Template[]>([])
+  const [templatesErr, setTemplatesErr] = useState(false)
   const [fruits, setFruits] = useState<Fruit[]>([])
+  const [fruitsErr, setFruitsErr] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
 
   // AI 右栏开合 + 宽度（可拖动）
@@ -62,9 +65,9 @@ export default function App() {
   }, [graph, route])
 
   useEffect(() => {
-    if (route === 'profile' && !profile) api.profile().then(setProfile).catch(() => {})
-    if (route === 'templates' && templates.length === 0) api.templates().then(setTemplates).catch(() => {})
-    if (route === 'fruit' && fruits.length === 0) api.fruits().then(setFruits).catch(() => {})
+    if (route === 'profile' && !profile) { setProfileErr(false); api.profile().then(setProfile).catch(() => setProfileErr(true)) }
+    if (route === 'templates' && templates.length === 0) { setTemplatesErr(false); api.templates().then(setTemplates).catch(() => setTemplatesErr(true)) }
+    if (route === 'fruit' && fruits.length === 0) { setFruitsErr(false); api.fruits().then(setFruits).catch(() => setFruitsErr(true)) }
   }, [route]) // eslint-disable-line
 
   const go = (r: Route) => { location.hash = r }
@@ -163,9 +166,9 @@ export default function App() {
             </>
           )}
           {(route === 'setup' || route === 'settings') && <SetupPanel onDone={() => go('tree')} />}
-          {route === 'profile' && <ProfilePanel profile={profile} />}
-          {route === 'templates' && <TemplatesPanel templates={templates} />}
-          {route === 'fruit' && <FruitPanel fruits={fruits} />}
+          {route === 'profile' && <ProfilePanel profile={profile} error={profileErr} onRetry={() => { setProfile(null); setReloadKey(k => k + 1) }} />}
+          {route === 'templates' && <TemplatesPanel templates={templates} error={templatesErr} onRetry={() => { setTemplates([]); setReloadKey(k => k + 1) }} />}
+          {route === 'fruit' && <FruitPanel fruits={fruits} error={fruitsErr} onRetry={() => { setFruits([]); setReloadKey(k => k + 1) }} />}
         </main>
 
         {/* 可拖动分隔条 + AI 右栏 */}
@@ -200,9 +203,13 @@ function startResize(setAiWidth: (f: (w: number) => number) => void, _initial: n
     const onUp = () => {
       document.removeEventListener('mousemove', onMove)
       document.removeEventListener('mouseup', onUp)
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
       // 存最终宽度
       setAiWidth(w => { localStorage.setItem(AI_WIDTH_KEY, String(w)); return w })
     }
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
     document.addEventListener('mousemove', onMove)
     document.addEventListener('mouseup', onUp)
   }

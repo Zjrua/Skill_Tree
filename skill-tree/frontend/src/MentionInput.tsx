@@ -19,6 +19,7 @@ export function MentionInput({ value, onChange, onSend, onStop, streaming, onCom
   const [activeSym, setActiveSym] = useState<string | null>(null)
   const [selIdx, setSelIdx] = useState(0)
   const debounceRef = useRef<number>(0)
+  const taRef = useRef<HTMLTextAreaElement>(null)
 
   // 检测光标前的 #/@/$ + 前缀
   useEffect(() => {
@@ -41,11 +42,20 @@ export function MentionInput({ value, onChange, onSend, onStop, streaming, onCom
   }, [value])
 
   const insertSuggestion = (item: { id: string; name: string }) => {
-    // 把光标前的 #prefix 替换为 #id（用 id 更稳定）
-    const newValue = value.replace(/([#@$])[^\s#@$]*$/, `$1${item.id} `)
+    // 在光标处替换 #/@/$ 前缀为符号+id,并恢复光标到插入点之后
+    const ta = taRef.current
+    const caret = ta ? ta.selectionStart : value.length
+    const before = value.slice(0, caret)
+    const after = value.slice(caret)
+    const replaced = before.replace(/([#@$])[^\s#@$]*$/, `$1${item.id} `)
+    if (replaced === before) return   // 光标前无匹配前缀,不插
+    const newValue = replaced + after
+    const newCaret = replaced.length
     onChange(newValue)
     setActiveSym(null)
     setSuggestions([])
+    // 异步恢复光标(等 React 更新 textarea value 后)
+    requestAnimationFrame(() => { ta?.focus(); ta?.setSelectionRange(newCaret, newCaret) })
   }
 
   const handleKey = (e: React.KeyboardEvent) => {
@@ -83,6 +93,7 @@ export function MentionInput({ value, onChange, onSend, onStop, streaming, onCom
         </div>
       )}
       <textarea
+        ref={taRef}
         className="ai-textarea"
         value={value}
         onChange={e => onChange(e.target.value)}

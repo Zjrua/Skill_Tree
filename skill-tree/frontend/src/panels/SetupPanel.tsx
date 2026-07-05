@@ -49,8 +49,10 @@ export function SetupPanel({ onDone }: Props) {
     setModelErr('')
   }
   const saveCfg = async () => {
-    await api.saveLlmConfig(cfg)
-    setStep(1)
+    try {
+      await api.saveLlmConfig(cfg)
+      setStep(1)
+    } catch (e: any) { setError('保存配置失败: ' + String(e.message || e)) }
   }
   const testCfg = async () => {
     setTesting(true); setTestMsg(null)
@@ -89,9 +91,11 @@ export function SetupPanel({ onDone }: Props) {
   }
   const apply = async () => {
     if (!genResult) return
-    await api.applyTree(genResult.trees, genResult.profile)
-    window.dispatchEvent(new Event('refresh-graph'))
-    onDone()
+    try {
+      await api.applyTree(genResult.trees, genResult.profile)
+      window.dispatchEvent(new Event('refresh-graph'))
+      onDone()
+    } catch (e: any) { setError('写入失败: ' + String(e.message || e)) }
   }
 
   return (

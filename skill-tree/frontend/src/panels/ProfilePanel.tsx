@@ -1,6 +1,12 @@
 import type { Profile } from '../types'
 
-export function ProfilePanel({ profile }: { profile: Profile | null }) {
+export function ProfilePanel({ profile, error, onRetry }: { profile: Profile | null; error?: boolean; onRetry?: () => void }) {
+  if (error && !profile) return (
+    <div className="panel active"><div className="empty-state">
+      <p>⚠ 简历加载失败。</p>
+      <button className="btn primary" onClick={onRetry}>重试</button>
+    </div></div>
+  )
   if (!profile) return <div className="panel active"><p className="panel-sub">加载中…</p></div>
   const c = profile.contact
   return (

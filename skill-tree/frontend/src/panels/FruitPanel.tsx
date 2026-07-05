@@ -1,6 +1,12 @@
 import type { Fruit } from '../types'
 
-export function FruitPanel({ fruits }: { fruits: Fruit[] }) {
+export function FruitPanel({ fruits, error, onRetry }: { fruits: Fruit[]; error?: boolean; onRetry?: () => void }) {
+  if (error && fruits.length === 0) return (
+    <div className="panel active"><div className="empty-state">
+      <p>⚠ 果实加载失败。</p>
+      <button className="btn primary" onClick={onRetry}>重试</button>
+    </div></div>
+  )
   return (
     <section className="panel active">
       <div className="panel-head">

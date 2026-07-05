@@ -57,6 +57,18 @@ export function AgentChat({ onClose }: Props) {
     api.chatSync(newSessions, newCurrent).catch(() => {})
   }, [])
 
+  // 多 tab 防静默覆盖:其他标签页改了会话时提示刷新(避免 last-write-wins 丢数据)
+  const [staleFromOtherTab, setStaleFromOtherTab] = useState(false)
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === CACHE_KEY && e.newValue && !document.hidden) {
+        setStaleFromOtherTab(true)
+      }
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
+  }, [])
+
   const newSession = useCallback(() => {
     const sid = `s_${Date.now()}`
     const s: ChatSession = {
@@ -207,6 +219,12 @@ export function AgentChat({ onClose }: Props) {
       />
       {!collapsed && (
         <>
+          {staleFromOtherTab && (
+            <div className="stale-banner">
+              另一个标签页修改了会话 · <button onClick={() => location.reload()}>刷新</button>
+              <span className="stale-x" onClick={() => setStaleFromOtherTab(false)}>✕</span>
+            </div>
+          )}
           <div className="chat-msgs" ref={scrollRef} onScroll={onScroll}>
             {(current?.messages.length ?? 0) === 0 && (
               <div className="chat-empty">问我学到哪了、下一步学啥…<br />用 #节点 @资源 $方向 引用，/new 开新会话</div>
