@@ -29,6 +29,14 @@
 html { scroll-behavior: smooth; }
 /* 键盘聚焦统一高亮(鼠标点击不触发,只键盘 Tab 触发) */
 :focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; border-radius: 4px; }
+
+/* 自定义滚动条(WebKit/Chromium):细 + 半透明 + 玉青 hover,贴合宝石工坊风格 */
+* { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }   /* Firefox */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--bark); background-clip: padding-box; }
+::-webkit-scrollbar-corner { background: transparent; }
 body {
   font-family: 'Manrope', 'Noto Serif SC', -apple-system, 'Microsoft YaHei', sans-serif;
   background: var(--ink);
