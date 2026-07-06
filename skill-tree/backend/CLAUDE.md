@@ -73,6 +73,6 @@
 
 ## 开发约定
 
-- 改布局/掌握度逻辑：同时改 layout.py/progress.py 和 tools/render.py（保持一致）
-- 加新 API：在 main.py 加路由，函数签名加 `x_user_id` 头参数
+- 改布局/掌握度逻辑：同时改 layout.py/progress.py（前端只渲染后端算好的布局）
+- 加新 API：在 main.py 加路由
 - 加供应商：ai.py 的 PROVIDER_PRESETS 列表加一项

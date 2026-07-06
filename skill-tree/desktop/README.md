@@ -2,7 +2,7 @@
 
 把技能树从"本地 web 双进程"封装成 **Tauri 桌面应用**(Windows `.msi`/`.exe`、macOS `.dmg`)。
 
-> 设计文档:`docs/superpowers/specs/2026-07-02-tauri-desktop-app-design.md`
+> 设计文档:`docs/design/2026-07-02-tauri-desktop-app-design.md`
 > 架构:Tauri shell(Rust)→ spawn Python sidecar(PyInstaller 冻结的 uvicorn)→ webview 加载前端 dist,用动态端口调后端;lark-cli Go 二进制打进 resources,首次解压到用户主目录。
 
 > ✅ **已验证(Windows)**：PyInstaller 冻结 sidecar(health + seed 通过)、`cargo tauri build` 产出 `.msi`(47MB)/`.exe`(35MB)、release exe 运行 sidecar 正确 spawn、数据落 `~/.skill-tree/data`。

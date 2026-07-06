@@ -45,7 +45,7 @@ skill-tree/backend/__pycache__/
 skill-tree/backend/*.pyc
 
 # Per-user LLM API keys (NEVER commit) — contains api_key secrets
-skill-tree/data/users/*/llm_config.json
+skill-tree/data/llm_config.json
 
 # Python cache
 __pycache__/
@@ -81,13 +81,12 @@ skill-tree/desktop/src-tauri/icons/*.icns
 skill-tree/desktop/src-tauri/icons/*.png
 
 # === 运行时数据(用户-specific,不入库)===
-skill-tree/data/users/*/chat_history.json
-skill-tree/data/users/*/rag_index/
-skill-tree/data/users/test*/
+skill-tree/data/chat_history.json
+skill-tree/data/rag_index/
 # 桌面应用用户主目录数据(若打包后在开发机跑过)
 ~/.skill-tree/
 
 
 # 导出的对话会话(chat export,临时数据,不入库)
 skill-tree/*学习方向*.json
-skill-tree/data/users/*/export_*.json
+skill-tree/data/export_*.json

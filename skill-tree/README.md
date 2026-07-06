@@ -19,8 +19,7 @@ skill-tree/
 ├── frontend/                   React + TypeScript (Vite)
 │   └── src/                    SkillTree 画布 + 多会话 AI 对话(AgentChat) + 侧栏四板块
 ├── desktop/                    Tauri 桌面 shell(打包成安装包,见 desktop/README.md)
-├── data/users/default/         ✏️ 数据源（dev 用；桌面应用复制到 ~/.skill-tree/data）
-├── tools/render.py             旧单文件生成器（仍生成 PROGRESS.md 给 GitHub 预览）
+├── data/         ✏️ 数据源（dev 用；桌面应用复制到 ~/.skill-tree/data）
 └── docker-compose.yml          dev 一键起 backend(8000) + frontend(5173)
 ```
 
@@ -77,14 +76,14 @@ Agent 不只是"加节点"——它有记忆、会短路、能自我校验、产
 - **Prompt 工程**：三套分层 prompt 带 few-shot + 回归测试
 - **飞书产出**：笔记/复习卡/周报归档到知识库
 
-设计文档：[`docs/superpowers/specs/2026-07-02-agent-depth-design.md`](../docs/superpowers/specs/2026-07-02-agent-depth-design.md)
+设计文档：[`docs/design/2026-07-02-agent-depth-design.md`](../docs/design/2026-07-02-agent-depth-design.md)
 
-## 数据源（`data/users/default/`）
+## 数据源（`data/`）
 
 开发期数据源；桌面应用首次启动会把这里复制到 `~/.skill-tree/data/` 作为 seed（排除 chat_history）。
 
 ```
-data/users/default/
+data/
 ├── recommendation.json   推荐方向节点（含验收子任务）
 ├── search.json           搜索方向节点
 ├── ads.json              广告方向节点

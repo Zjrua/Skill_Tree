@@ -10,7 +10,7 @@
 #
 # ⚠ 本文件未经实跑验证(本会话环境无 PyInstaller)。
 #   首次打包若报 ModuleNotFoundError,把缺的模块加进 hiddenimports 重打。
-#   seed 目录(datas 里 '../data/users/default')解包后的实际路径需在
+#   seed 目录(datas 里 '../data')解包后的实际路径需在
 #   entry.py / main.py 用 sys._MEIPASS 或 Path(__file__).parent 探测,见注释。
 
 from PyInstaller.utils.hooks import collect_all
@@ -24,7 +24,7 @@ for pkg in ('uvicorn', 'fastapi', 'pydantic'):
     hiddenimports += h
 
 # 带上 seed 数据(首次启动复制到用户主目录);解包后落在 _internal/seed/
-datas += [('../data/users/default', 'seed')]
+datas += [('../data', 'seed')]
 
 # 本项目自己的模块(Python 标准库外的本地 import,PyInstaller 静态分析常漏)
 hiddenimports += [

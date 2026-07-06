@@ -4,7 +4,7 @@
 - **作者**:zjrua(与 brainstorming 协作)
 - **状态**:待实现
 - **范围**:把 `2026-06-30-llm-agent-design.md` 里画好图但浇了一半的楼盖完——补承重柱(记忆/短路/提案),加装修(Reflexion/Prompt 工程),通下水道(doc→wiki 闭环)
-- **关联**:`docs/superpowers/specs/2026-06-30-llm-agent-design.md`(原始设计,本文件是其深化与兑付)
+- **关联**:`docs/design/2026-06-30-llm-agent-design.md`(原始设计,本文件是其深化与兑付)
 
 ---
 

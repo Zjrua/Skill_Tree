@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 标准库(urllib/subprocess/re/dataclasses)、FastAPI、SSE、lark-cli subprocess、React+TypeScript 前端。
 
-**Spec:** `docs/superpowers/specs/2026-07-02-agent-depth-design.md`
+**Spec:** `docs/design/2026-07-02-agent-depth-design.md`
 
 ---
 

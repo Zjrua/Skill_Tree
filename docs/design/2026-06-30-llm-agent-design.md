@@ -418,7 +418,7 @@ skill-tree/frontend/src/
 
 ```
 skill-tree/data/users/<uid>/rag_index/   【运行时生成】索引文件
-docs/superpowers/specs/2026-06-30-llm-agent-design.md   【本文件】
+docs/design/2026-06-30-llm-agent-design.md   【本文件】
 README.md                                【修改】补充 lark-cli auth 配置说明
 ```
 

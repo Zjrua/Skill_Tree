@@ -10,7 +10,7 @@
 - **Part A(Task 1-6)纯代码,TDD 可验证**——去多用户隔离、数据目录、sidecar 入口、seed 逻辑、前端端口注入、larkpub 本地二进制。这部分我自己跑测试保绿。
 - **Part B(Task 7-10)工具链依赖**——Tauri 配置、PyInstaller spec、打包脚本、CI。这些**无法在当前环境执行/验证**,写成"配置文件 + 操作手册",由用户在本机装好工具链后照着跑。
 
-**Spec:** `docs/superpowers/specs/2026-07-02-tauri-desktop-app-design.md`
+**Spec:** `docs/design/2026-07-02-tauri-desktop-app-design.md`
 
 ---
 

@@ -3,7 +3,7 @@
 数据全部存放在 DATA_ROOT 下（单用户）。DATA_ROOT 默认指向用户主目录
 ~/.skill-tree/data（桌面应用：升级/卸载不丢数据），可通过环境变量 DATA_ROOT
 覆盖（开发期/测试依赖此点）。首次启动时若 DATA_ROOT 为空，会从内置 seed 目录
-（SEED_DIR，默认 data/users/default）复制初始技能树。
+（SEED_DIR，默认 data）复制初始技能树。
 
 API:
   GET  /api/graph          合并去重 + 布局 + 掌握度 + 成就 + 总览
@@ -70,7 +70,7 @@ DATA_ROOT = _user_data_root()
 
 def _resolve_seed_dir() -> Path:
     """seed 源解析:env 优先;打包态(PyInstaller)用 sys._MEIPASS/seed;
-    开发态用项目内 data/users/default。"""
+    开发态用项目内 data/。"""
     env = os.environ.get("SEED_DIR")
     if env:
         return Path(env)
@@ -84,7 +84,7 @@ def _resolve_seed_dir() -> Path:
         cand = base / "seed"
         if cand.is_dir():
             return cand
-    return HERE.parent / "data" / "users" / "default"
+    return HERE.parent / "data"
 
 
 _SEED_DIR = _resolve_seed_dir()

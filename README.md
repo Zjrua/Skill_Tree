@@ -2,7 +2,7 @@
 
 一个**状态驱动**的实习备战系统：用可视化的技能树规划学习路径、追踪掌握进度、解锁成就；简历和开源项目是这棵树结出的**果实**。
 
-> 📄 **[系统设计文档（飞书）](https://my.feishu.cn/docx/M6FGdMITtoZenZxS8X5cRjXXnIQ)** — 完整设计思路与技术路线（Agent 三层架构 / RAG 混合检索 / Reflexion 自校验 / 飞书文档产出闭环 / 面试讲法）。本地 spec 与实现计划见 `docs/superpowers/`。
+> 📄 **[系统设计文档（飞书）](https://my.feishu.cn/docx/M6FGdMITtoZenZxS8X5cRjXXnIQ)** — 完整设计思路与技术路线（Agent 三层架构 / RAG 混合检索 / Reflexion 自校验 / 飞书文档产出闭环 / 面试讲法）。本地 spec 与实现计划见 `docs/`。
 
 > Obsidian / Notion / 飞书是对**已有知识**的总结；技能树是对**未来学习路径**的规划，有明确的进度反馈。
 
@@ -83,12 +83,12 @@ pip install numpy
 ## 目录结构
 
 ```
-├── skill-tree/              ← 【主体】技能树全栈应用
-│   ├── backend/               FastAPI：main.py(API) + ai.py(大模型) + layout.py(DAG布局) + progress.py(掌握度)
-│   ├── frontend/              React+TS：App.tsx(SPA) + SkillTree.tsx(DAG) + NodeCard.tsx + SetupPanel.tsx + AiModal.tsx
-│   ├── data/users/<id>/       每用户独立数据：方向树JSON + profile.json + achievements.json + llm_config.json
-│   ├── tools/render.py        旧单文件生成器（生成 PROGRESS.md 供 GitHub 预览）
-│   └── docker-compose.yml
+├── skill-tree/              ← 【主体】技能树全栈应用 + AI Agent
+│   ├── backend/               FastAPI：API + Agent 内核(agent/) + RAG(rag/) + layout/progress(图谱)
+│   ├── frontend/              React+TS：DAG 图谱 + 多会话 AI 对话 + 侧栏四板块
+│   ├── desktop/               Tauri 桌面 shell(打包成 .msi/.dmg)
+│   ├── data/users/default/    单用户数据：方向树 JSON + profile + 成就 + llm_config
+│   └── scripts/               桌面打包脚本
 ├── resume/                  ← 【果实】模块化 LaTeX 简历
 │   ├── shared/                素材单一数据源(personal/education/experience/skills)
 │   ├── profiles/              岗位 profile(推荐/搜索/广告/agent)

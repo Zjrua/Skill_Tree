@@ -20,8 +20,6 @@ skill-tree/
 │       ├── profile.json      个人信息（⚠️ 须与 resume/shared/*.tex 同步）
 │       ├── achievements.json 成就定义
 │       └── llm_config.json   大模型配置（含 API Key，已 gitignore）
-├── tools/
-│   └── render.py            旧单文件生成器 → dist/PROGRESS.md（GitHub 预览用，主流程已不用）
 ├── docker-compose.yml       一键起 frontend(:5173) + backend(:8000)（dev 用）
 └── README.md
 ```
@@ -39,7 +37,7 @@ bash scripts/build-desktop.sh         # 前端 build → PyInstaller 冻结 → 
 
 ## 数据落点（重要）
 
-- **开发**：`DATA_ROOT` env 或默认 `data/users/default`（项目内）
+- **开发**：`DATA_ROOT` env 或默认 `data`（项目内）
 - **桌面应用**：`~/.skill-tree/data`（用户主目录，升级/卸载不丢）
 - 首次启动若空，从打包内置 seed 复制初始技能树/profile/成就（排除 chat_history）
 - env 覆盖：`DATA_ROOT` / `RESUME_DIR` / `PROJECTS_DIR` / `SEED_DIR`
@@ -55,7 +53,7 @@ bash scripts/build-desktop.sh         # 前端 build → PyInstaller 冻结 → 
 
 ## AI Agent（核心特性）
 
-三层架构 + 六个设计点（详见 `docs/superpowers/specs/2026-07-02-agent-depth-design.md`）：
+三层架构 + 六个设计点（详见 `docs/design/2026-07-02-agent-depth-design.md`）：
 - **记忆**：前端发最近 12 条历史，后端无状态注入 Executor
 - **短路**：Planner 分类后 chat 单步直答，不滥用 ReAct
 - **提案闭环**：add_node/add_tasks 产 node_proposal 卡片，用户确认才 apply
@@ -74,5 +72,4 @@ bash scripts/build-desktop.sh         # 前端 build → PyInstaller 冻结 → 
 
 ## 不动的部分
 
-- `data/users/default/` 是 owner 的真实数据（搜广推+agent），也是桌面应用的 seed 源，不要覆盖
-- `tools/render.py` 保留作 GitHub 进度表生成，逻辑与 backend/layout.py + progress.py 平行（改动需同步两边）
+- `data/` 是 owner 的真实数据（搜广推+agent），也是桌面应用的 seed 源，不要覆盖
