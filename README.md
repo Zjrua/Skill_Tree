@@ -89,7 +89,7 @@ pip install numpy
 │   ├── desktop/               Tauri 桌面 shell(打包成 .msi/.dmg)
 │   ├── data/users/default/    单用户数据：方向树 JSON + profile + 成就 + llm_config
 │   └── scripts/               桌面打包脚本
-├── resume/                  ← 【果实】模块化 LaTeX 简历
+├── resume/                  ← 【果实】模块化 LaTeX 简历(本地,含个人信息,已 gitignore)
 │   ├── shared/                素材单一数据源(personal/education/experience/skills)
 │   ├── profiles/              岗位 profile(推荐/搜索/广告/agent)
 │   ├── templates/             7 套 LaTeX 模板
@@ -111,13 +111,15 @@ pip install numpy
 
 ## 编译简历
 
+> resume/ 目录含个人信息,已 gitignore,不在公开仓库中。本地使用:
+
 ```cmd
 cd resume\build
 build_profile.cmd                    :: 编译所有 profile → build\<profile>.pdf
 build_profile.cmd recommendation     :: 只编译推荐算法岗
 ```
 
-详见 [resume/CLAUDE.md](resume/CLAUDE.md)。
+详见本地 `resume/CLAUDE.md`。
 
 ## 设计原则
 

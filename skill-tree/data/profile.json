@@ -1,28 +1,28 @@
 {
-  "_comment": "⚠️ 本文件是前端「个人信息」板块的数据源。与 resume/shared/*.tex 是同一信息的两份表达——改了一处请同步另一处。",
-  "name": "***REMOVED***",
-  "name_en": "***REMOVED***",
-  "tagline": "***REMOVED***应用统计在读硕士 · 冲刺搜广推算法实习",
+  "_comment": "⚠️ 本文件是前端「个人信息」板块的数据源。与 resume/shared/*.tex 是同一信息的两份表达——改了一处请同步另一处。公开模板占位符，本地使用请替换为真实信息。",
+  "name": "你的姓名",
+  "name_en": "Your Name",
+  "tagline": "应用统计在读硕士 · 冲刺算法实习",
   "contact": {
-    "email": "***REMOVED***",
-    "phone": "(+86) ***REMOVED***",
-    "github": "Zjrua",
-    "github_url": "https://github.com/Zjrua"
+    "email": "your.email@example.com",
+    "phone": "(+86) your-phone-number",
+    "github": "your-github",
+    "github_url": "https://github.com/your-github"
   },
   "education": [
     {
-      "school": "***REMOVED*** (HIT)",
+      "school": "你的学校 (Your University)",
       "period": "2025 — 2028",
       "degree": "硕士研究生",
       "major": "应用统计 (Applied Statistics)",
-      "location": "哈尔滨"
+      "location": "城市"
     },
     {
-      "school": "***REMOVED*** (HIT)",
+      "school": "你的学校 (Your University)",
       "period": "2020 — 2024",
       "degree": "理学学士",
       "major": "信息与计算科学 (Information & Computing Science)",
-      "location": "哈尔滨"
+      "location": "城市"
     }
   ],
   "skills": [
@@ -84,12 +84,11 @@
   ],
   "awards": [
     {"title": "美国大学生数学建模竞赛 (MCM/ICM) 一等奖 (Meritorious Winner)", "year": "2022"},
-    {"title": "全国大学生数学建模竞赛 黑龙江省二等奖", "year": "2023"},
-    {"title": "全国大学生统计建模大赛（研究生组），队长", "year": "2026", "note": "***REMOVED***"},
-    {"title": "***REMOVED***校优秀学生「启智润心奖」", "year": "2022"}
+    {"title": "全国大学生数学建模竞赛 省级二等奖", "year": "2023"},
+    {"title": "校级优秀学生奖", "year": "2022"}
   ],
   "leadership": [
-    "***REMOVED***全媒体中心学生团队负责人（2022—2024）",
+    "校级学生团队负责人（2022—2024）",
     "应用统计专业研究生班长（2025—2026 学年）",
     "高中参加全国青少年信息学奥林匹克联赛 (NOIP)"
   ]

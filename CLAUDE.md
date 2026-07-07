@@ -4,7 +4,7 @@ This file gives AI coding agents context for working in this repository.
 
 ## Project Overview
 
-实习备战系统。Owner: ***REMOVED*** (Zjrua)，***REMOVED***应用统计研究生(2025-2028)。
+实习备战系统。Owner: 你（占位符，本地请替换），应用统计研究生(2025-2028)。
 **技能树是主体**——可视化学习路径 + 掌握度追踪 + AI 生成；简历和开源项目是**果实**。
 
 > 📄 **[系统设计文档（飞书）](https://my.feishu.cn/docx/M6FGdMITtoZenZxS8X5cRjXXnIQ)** — Agent 系统的完整设计思路与技术路线。
